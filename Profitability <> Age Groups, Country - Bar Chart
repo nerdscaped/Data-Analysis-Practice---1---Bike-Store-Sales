@@ -1,0 +1,69 @@
+import numpy as np
+import pandas as pd
+import pip
+import seaborn as sns
+import matplotlib.pyplot as plt
+sales = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/sales_data.csv')
+sales['profitability'] = sales['Profit'] / sales['Revenue'] * 100 #This is the profitability variable of each individual sale I decided to formulate. It gives the percentage of each sale which is profit (Higher = higher profit) 
+
+print(set(sales['Age_Group'])) # To see how Ages are grouped in dataset
+
+#(1)I wanted to study the differences in profitability between age groups - found very small differences, but sligtly higher from seniors, so could be worth focusing on that market
+#Used medians as there were a few Outliers 
+#Further Thought - Seniors have higher disposable incomes, so therefore more able to purchase high profit items, but are also less likely to be active - focus will likely alienate other customer groups
+ProfYoung = sales.loc[sales['Age_Group'] == 'Youth (<25)', 'profitability'].median()
+ProfYAdult = sales.loc[sales['Age_Group'] == 'Young Adults (25-34)', 'profitability'].median()
+ProfAdult = sales.loc[sales['Age_Group'] == 'Adults (35-64)', 'profitability'].median()
+ProfOld = sales.loc[sales['Age_Group'] == 'Seniors (64+)', 'profitability'].median()
+Prof = [ProfYoung, ProfYAdult, ProfAdult, ProfOld]
+Ages = sales['Age_Group'].unique()
+# After finding that seniors were slightly more profitable than other age groups, I wanted to see whether they were being exploited as fully as possible, hence I added text on top to indicate where profit was coming from.
+# I think the text looks very clunky
+TProfY = round(((sales.loc[sales['Age_Group'] == 'Youth (<25)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+TProfYA = round(((sales.loc[sales['Age_Group'] == 'Young Adults (25-34)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+TProfA = round(((sales.loc[sales['Age_Group'] == 'Adults (35-64)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+TProfO = round(((sales.loc[sales['Age_Group'] == 'Seniors (64+)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+plt.text(0,10,"Proportion Profit from Youth "+str(TProfY)+"%")
+plt.text(.5,20,"Proportion Profit from Young Adults "+str(TProfYA)+"%")
+plt.text(1,30,"Proportion Profit from Adults "+str(TProfA)+"%")
+plt.text(1.5,40,"Proportion Profit from Seniors "+str(TProfO)+"%")
+plt.xticks(range(len(Ages)), Ages)
+plt.xlabel('Age Groups')
+plt.ylabel('Profitability')
+plt.title('Bar Chart Showing Median Profitability of Each Age Group')
+plt.bar(range(len(Ages)), Prof) 
+plt.show()
+
+#(2)Then wanted to study if this first graph is hiding differences between countries, so made below graph
+#Now the main variables formation: 
+ProfYouthUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Youth (<25)'), 'profitability'].mean()
+ProfYouthF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Youth (<25)'), 'profitability'].mean()
+ProfYouthC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Youth (<25)'), 'profitability'].mean()
+ProfYouthA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Youth (<25)'), 'profitability'].mean()
+ProfYouthG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Youth (<25)'), 'profitability'].mean()
+ProfYouthUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Youth (<25)'), 'profitability'].mean()
+ProfYouth = [ProfYouthUSA,ProfYouthF,ProfYouthC,ProfYouthA,ProfYouthG,ProfYouthUK]
+
+ProfYAdultUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'profitability'].mean()
+ProfYAdultF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'profitability'].mean()
+ProfYAdultC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'profitability'].mean()
+ProfYAdultA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'profitability'].mean()
+ProfYAdultG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'profitability'].mean()
+ProfYAdultUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'profitability'].mean()
+ProfYAdult = [ProfYAdultUSA,ProfYAdultF,ProfYAdultC,ProfYAdultA,ProfYAdultG,ProfYAdultUK]
+
+ProfAdultsUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Adults (35-64)'), 'profitability'].mean()
+ProfAdultsF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Adults (35-64)'), 'profitability'].mean()
+ProfAdultsC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Adults (35-64)'), 'profitability'].mean()
+ProfAdultsA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Adults (35-64)'), 'profitability'].mean()
+ProfAdultsG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Adults (35-64)'), 'profitability'].mean()
+ProfAdultsUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Adults (35-64)'), 'profitability'].mean()
+ProfAdult = [ProfAdultsUSA,ProfAdultsF,ProfAdultsC,ProfAdultsA,ProfAdultsG,ProfAdultsUK]
+
+ProfOldUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Seniors (64+)'), 'profitability'].mean()
+ProfOldF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Seniors (64+)'), 'profitability'].mean()
+ProfOldC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Seniors (64+)'), 'profitability'].mean()
+ProfOldA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Seniors (64+)'), 'profitability'].mean()
+ProfOldG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Seniors (64+)'), 'profitability'].mean()
+ProfOldUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Seniors (64+)'), 'profitability'].mean()
+ProfOld = [ProfOldUSA,ProfOldF,ProfOldC,ProfOldA,ProfOldG,ProfOldUK]
