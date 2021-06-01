@@ -155,3 +155,44 @@ plt.plot([3.9, 4.7], [ProfGer, ProfGer],color='black') #Ger
 ProfUka = sales.loc[sales['Country'] == 'United Kingdom', 'Gross_Profit_Ratio'].median()
 plt.plot([4.9,5.7], [ProfUka, ProfUka],color='black') #uk
 plt.show()
+
+#(4) Now I want to compare if either gender garners a substancially bigger profitability ratio - the answer is no:(
+ProfUSAM = sales.loc[(sales['Country'] == 'United States') & (sales['Customer_Gender'] == 'M'), 'Gross_Profit_Ratio'].median()
+ProfFM = sales.loc[(sales['Country'] == 'France') & (sales['Customer_Gender'] == 'M'), 'Gross_Profit_Ratio'].median()
+ProfCM = sales.loc[(sales['Country'] == 'Canada') & (sales['Customer_Gender'] == 'M'), 'Gross_Profit_Ratio'].median()
+ProfAM = sales.loc[(sales['Country'] == 'Australia') & (sales['Customer_Gender'] == 'M'), 'Gross_Profit_Ratio'].median()
+ProfGM = sales.loc[(sales['Country'] == 'Germany') & (sales['Customer_Gender'] == 'M'), 'Gross_Profit_Ratio'].median()
+ProfUKM = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Customer_Gender'] == 'M'), 'Gross_Profit_Ratio'].median()
+PROFM = [ProfUSAM,ProfFM,ProfCM,ProfAM,ProfGM,ProfUKM]
+ProfUSAF = sales.loc[(sales['Country'] == 'United States') & (sales['Customer_Gender'] == 'F'), 'Gross_Profit_Ratio'].median()
+ProfFF = sales.loc[(sales['Country'] == 'France') & (sales['Customer_Gender'] == 'F'), 'Gross_Profit_Ratio'].median()
+ProfCF = sales.loc[(sales['Country'] == 'Canada') & (sales['Customer_Gender'] == 'F'), 'Gross_Profit_Ratio'].median()
+ProfAF = sales.loc[(sales['Country'] == 'Australia') & (sales['Customer_Gender'] == 'F'), 'Gross_Profit_Ratio'].median()
+ProfGF = sales.loc[(sales['Country'] == 'Germany') & (sales['Customer_Gender'] == 'F'), 'Gross_Profit_Ratio'].median()
+ProfUKF = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Customer_Gender'] == 'F'), 'Gross_Profit_Ratio'].median()
+PROFF = [ProfUSAF,ProfFF,ProfCF,ProfAF,ProfGF,ProfUKF]
+
+Genders = ['Male','Female']
+width =0.5
+plt.xticks(range(len(country_Profa)), countries)
+plt.xlabel('Countries')
+plt.ylabel('Gross Profit Ratio (%)')
+plt.title('Bar Chart Showing Median Gross Profit Ratio of Each Gender in Each Country')
+plt.bar(np.arange(len(PROFM)), PROFM, width=width,color='hotpink')
+plt.bar(np.arange(len(PROFF))+ width, PROFF, width=width,color='blue')
+plt.legend(Genders,loc=5)
+ProfUSA = sales.loc[sales['Country'] == 'United States', 'Gross_Profit_Ratio'].median()
+plt.plot([-0.1,0.7], [ProfUSA, ProfUSA],color='black') #USA
+ProfFr = sales.loc[sales['Country'] == 'France', 'Gross_Profit_Ratio'].median()
+plt.plot([0.9, 1.7], [ProfFr, ProfFr],color='black') #France
+ProfCan = sales.loc[sales['Country'] == 'Canada', 'Gross_Profit_Ratio'].median()
+plt.plot([1.9, 2.7], [ProfCan, ProfCan],color='black') #Canada
+ProfAus = sales.loc[sales['Country'] == 'Australia', 'Gross_Profit_Ratio'].median()
+plt.plot([2.9, 3.7], [ProfAus, ProfAus],color='black') #Aus
+ProfGer = sales.loc[sales['Country'] == 'Germany', 'Gross_Profit_Ratio'].median()
+plt.plot([3.9, 4.7], [ProfGer, ProfGer],color='black') #Ger
+ProfUka = sales.loc[sales['Country'] == 'United Kingdom', 'Gross_Profit_Ratio'].median()
+plt.plot([4.9,5.7], [ProfUka, ProfUka],color='black') #uk
+plt.show()
+#Now a look to see if age plays any role in gender
+
