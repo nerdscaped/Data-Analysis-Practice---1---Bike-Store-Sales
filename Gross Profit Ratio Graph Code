@@ -1,0 +1,130 @@
+import numpy as np
+import pandas as pd
+import pip
+import seaborn as sns
+import matplotlib.pyplot as plt
+sales = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/sales_data.csv')
+sales['Gross_Profit_Ratio'] = sales['Profit'] / sales['Revenue'] * 100 # GPR gives the percentage of each sale which is profit (before overhead costs) (Higher = higher profitability) 
+
+print(set(sales['Age_Group'])) # To see how Ages are grouped in dataset
+
+#(1)I wanted to study the differences in profitability between age groups - found very small differences, but sligtly higher from seniors, so could be worth focusing on that market
+#Used medians as there were a few Outliers 
+#Further Thought - Seniors have higher disposable incomes, so therefore more able to purchase high profit items, but are also less likely to be active - focus will likely alienate other customer groups
+ProfYoung = sales.loc[sales['Age_Group'] == 'Youth (<25)', 'Gross_Profit_Ratio'].median()
+ProfYAdult = sales.loc[sales['Age_Group'] == 'Young Adults (25-34)', 'Gross_Profit_Ratio'].median()
+ProfAdult = sales.loc[sales['Age_Group'] == 'Adults (35-64)', 'Gross_Profit_Ratio'].median()
+ProfOld = sales.loc[sales['Age_Group'] == 'Seniors (64+)', 'Gross_Profit_Ratio'].median()
+Prof = [ProfYoung, ProfYAdult, ProfAdult, ProfOld]
+Ages = ['Youth (<25)','Young Adults (25-34)','Adults (35-64)','Seniors (64+)']
+# After finding that seniors were slightly more profitable than other age groups, I wanted to see whether they were being exploited as fully as possible, hence I added text on top to indicate where profit was coming from.
+# I think the text looks very clunky
+TProfY = round(((sales.loc[sales['Age_Group'] == 'Youth (<25)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+TProfYA = round(((sales.loc[sales['Age_Group'] == 'Young Adults (25-34)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+TProfA = round(((sales.loc[sales['Age_Group'] == 'Adults (35-64)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+TProfO = round(((sales.loc[sales['Age_Group'] == 'Seniors (64+)', 'Profit'].sum()) / (sales['Profit'].sum()) *100),1)
+plt.text(0,10,"Proportion Profit from Youth "+str(TProfY)+"%")
+plt.text(.5,20,"Proportion Profit from Young Adults "+str(TProfYA)+"%")
+plt.text(1,30,"Proportion Profit from Adults "+str(TProfA)+"%")
+plt.text(1.5,40,"Proportion Profit from Seniors "+str(TProfO)+"%")
+plt.xticks(range(len(Ages)), Ages)
+plt.xlabel('Age Groups')
+plt.ylabel('Gross Profit Ratio')
+plt.title('Bar Chart Showing Median Gross_Profit_Ratio of Each Age Group')
+plt.bar(range(len(Ages)), Prof) 
+plt.show()
+
+#(2)Then wanted to study if this first graph is hiding differences between countries, so made below graph - found there are differences between countries
+#Now the main variables formation: 
+ProfYouthUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Youth (<25)'), 'Gross_Profit_Ratio'].median()
+ProfYouthF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Youth (<25)'), 'Gross_Profit_Ratio'].median()
+ProfYouthC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Youth (<25)'), 'Gross_Profit_Ratio'].median()
+ProfYouthA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Youth (<25)'), 'Gross_Profit_Ratio'].median()
+ProfYouthG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Youth (<25)'), 'Gross_Profit_Ratio'].median()
+ProfYouthUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Youth (<25)'), 'Gross_Profit_Ratio'].median()
+ProfYouth = [ProfYouthUSA,ProfYouthF,ProfYouthC,ProfYouthA,ProfYouthG,ProfYouthUK]
+
+ProfYAdultUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'Gross_Profit_Ratio'].median()
+ProfYAdultF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'Gross_Profit_Ratio'].median()
+ProfYAdultC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'Gross_Profit_Ratio'].median()
+ProfYAdultA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'Gross_Profit_Ratio'].median()
+ProfYAdultG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'Gross_Profit_Ratio'].median()
+ProfYAdultUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Young Adults (25-34)'), 'Gross_Profit_Ratio'].median()
+ProfYAdult = [ProfYAdultUSA,ProfYAdultF,ProfYAdultC,ProfYAdultA,ProfYAdultG,ProfYAdultUK]
+
+ProfAdultsUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Adults (35-64)'), 'Gross_Profit_Ratio'].median()
+ProfAdultsF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Adults (35-64)'), 'Gross_Profit_Ratio'].median()
+ProfAdultsC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Adults (35-64)'), 'Gross_Profit_Ratio'].median()
+ProfAdultsA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Adults (35-64)'), 'Gross_Profit_Ratio'].median()
+ProfAdultsG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Adults (35-64)'), 'Gross_Profit_Ratio'].median()
+ProfAdultsUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Adults (35-64)'), 'Gross_Profit_Ratio'].median()
+ProfAdult = [ProfAdultsUSA,ProfAdultsF,ProfAdultsC,ProfAdultsA,ProfAdultsG,ProfAdultsUK]
+
+ProfOldUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Age_Group'] == 'Seniors (64+)'), 'Gross_Profit_Ratio'].median()
+ProfOldF = sales.loc[(sales['Country'] == 'France') & (sales['Age_Group'] == 'Seniors (64+)'), 'Gross_Profit_Ratio'].median()
+ProfOldC = sales.loc[(sales['Country'] == 'Canada') & (sales['Age_Group'] == 'Seniors (64+)'), 'Gross_Profit_Ratio'].median()
+ProfOldA = sales.loc[(sales['Country'] == 'Australia') & (sales['Age_Group'] == 'Seniors (64+)'), 'Gross_Profit_Ratio'].median()
+ProfOldG = sales.loc[(sales['Country'] == 'Germany') & (sales['Age_Group'] == 'Seniors (64+)'), 'Gross_Profit_Ratio'].median()
+ProfOldUK = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Age_Group'] == 'Seniors (64+)'), 'Gross_Profit_Ratio'].median()
+ProfOld = [ProfOldUSA,ProfOldF,ProfOldC,ProfOldA,ProfOldG,ProfOldUK]
+
+width =0.2
+Ages = ['Youth (<25)','Young Adults (25-34)','Adults (35-64)','Seniors (64+)']
+plt.xticks(range(len(country_Profa)), countries)
+plt.bar(np.arange(len(ProfYouth)), ProfYouth, width=width)
+plt.bar(np.arange(len(ProfYAdult))+ width, ProfYAdult, width=width)
+plt.bar(np.arange(len(ProfAdult))+ 2 *width, ProfAdult, width=width)
+plt.bar(np.arange(len(ProfOld))+ 3 *width, ProfOld, width=width)
+plt.xlabel('Countries')
+plt.ylabel('Gross Profit Ratio')
+plt.title('Bar Chart Showing Median Profitability of Each Age Group in Each Country')
+plt.legend(Ages,loc=5)
+#These lines represent the overall profitability of each country, just as an aid to show age proportions
+ProfUSA = sales.loc[sales['Country'] == 'United States', 'Gross_Profit_Ratio'].median()
+plt.plot([-0.1,0.7], [ProfUSA, ProfUSA],color='black') #USA
+ProfFr = sales.loc[sales['Country'] == 'France', 'Gross_Profit_Ratio'].median()
+plt.plot([0.9, 1.7], [ProfFr, ProfFr],color='black') #France
+ProfCan = sales.loc[sales['Country'] == 'Canada', 'Gross_Profit_Ratio'].median()
+plt.plot([1.9, 2.7], [ProfCan, ProfCan],color='black') #Canada
+ProfAus = sales.loc[sales['Country'] == 'Australia', 'Gross_Profit_Ratio'].median()
+plt.plot([2.9, 3.7], [ProfAus, ProfAus],color='black') #Aus
+ProfGer = sales.loc[sales['Country'] == 'Germany', 'Gross_Profit_Ratio'].median()
+plt.plot([3.9, 4.7], [ProfGer, ProfGer],color='black') #Ger
+ProfUka = sales.loc[sales['Country'] == 'United Kingdom', 'Gross_Profit_Ratio'].median()
+plt.plot([4.9,5.7], [ProfUka, ProfUka],color='black') #uk
+plt.show()
+
+#(3) Next I wanted to compare the profit ratios between product categories, then between countries
+
+ProfaUSA = sales.loc[(sales['Country'] == 'United States') & (sales['Product_Category'] == 'Accessories'), 'Gross_Profit_Ratio'].median()
+ProfaFA = sales.loc[(sales['Country'] == 'France') & (sales['Product_Category'] == 'Accessories'), 'Gross_Profit_Ratio'].median()
+ProfaCA = sales.loc[(sales['Country'] == 'Canada') & (sales['Product_Category'] == 'Accessories'), 'Gross_Profit_Ratio'].median()
+ProfaAA = sales.loc[(sales['Country'] == 'Australia') & (sales['Product_Category'] == 'Accessories'), 'Gross_Profit_Ratio'].median()
+ProfaGA = sales.loc[(sales['Country'] == 'Germany') & (sales['Product_Category'] == 'Accessories'), 'Gross_Profit_Ratio'].median()
+ProfaUKA = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Product_Category'] == 'Accessories'), 'Gross_Profit_Ratio'].median()
+PROFA = [ProfaUSA,ProfaFA,ProfaCA,ProfaAA,ProfaGA,ProfaUKA]
+PROFA_C = list(zip(countries,PROFA))
+ProfaUSB = sales.loc[(sales['Country'] == 'United States') & (sales['Product_Category'] == 'Bikes'), 'Gross_Profit_Ratio'].median()
+ProfaFB = sales.loc[(sales['Country'] == 'France') & (sales['Product_Category'] == 'Bikes'), 'Gross_Profit_Ratio'].median()
+ProfaCB = sales.loc[(sales['Country'] == 'Canada') & (sales['Product_Category'] == 'Bikes'), 'Gross_Profit_Ratio'].median()
+ProfaAB = sales.loc[(sales['Country'] == 'Australia') & (sales['Product_Category'] == 'Bikes'), 'Gross_Profit_Ratio'].median()
+ProfaGB = sales.loc[(sales['Country'] == 'Germany') & (sales['Product_Category'] == 'Bikes'), 'Gross_Profit_Ratio'].median()
+ProfaUKB = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Product_Category'] == 'Bikes'), 'Gross_Profit_Ratio'].median()
+PROFB = [ProfaUSB,ProfaFB,ProfaCB,ProfaAB,ProfaGB,ProfaUKB]
+PROFB_C = list(zip(countries,PROFB))
+ProfaUSC = sales.loc[(sales['Country'] == 'United States') & (sales['Product_Category'] == 'Clothing'), 'Gross_Profit_Ratio'].median()
+ProfaFC = sales.loc[(sales['Country'] == 'France') & (sales['Product_Category'] == 'Clothing'), 'Gross_Profit_Ratio'].median()
+ProfaCC = sales.loc[(sales['Country'] == 'Canada') & (sales['Product_Category'] == 'Clothing'), 'Gross_Profit_Ratio'].median()
+ProfaAC = sales.loc[(sales['Country'] == 'Australia') & (sales['Product_Category'] == 'Clothing'), 'Gross_Profit_Ratio'].median()
+ProfaGC = sales.loc[(sales['Country'] == 'Germany') & (sales['Product_Category'] == 'Clothing'), 'Gross_Profit_Ratio'].median()
+ProfaUKC = sales.loc[(sales['Country'] == 'United Kingdom') & (sales['Product_Category'] == 'Clothing'), 'Gross_Profit_Ratio'].median()
+PROFC = [ProfaUSC,ProfaFC,ProfaCC,ProfaAC,ProfaGC,ProfaUKC]
+PROFC_C = list(zip(countries,PROFC))
+width =0.3
+
+plt.xticks(range(len(country_Profa)), countries)
+plt.bar(np.arange(len(PROFA)), PROFA, width=width)
+plt.bar(np.arange(len(PROFB))+ width, PROFB, width=width)
+plt.bar(np.arange(len(PROFC))+ 2 *width, PROFC, width=width)
+plt.legend()
+plt.show()
