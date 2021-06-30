@@ -1,0 +1,47 @@
+#So a little bit of explanation. I have found out a better way of doing things with pandas from my learning, so I will be using this method going forward.
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+sales = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/sales_data.csv')
+sales['Profitability'] = sales['Profit'] / sales['Revenue'] * 100 #profit ratio variable is used to compare profitability 
+
+#Graph showing mean profitability of each age group in each country
+ProfUSA = sales.loc[sales['Country'] == 'United States', 'Profitability'].mean()
+ProfAus = sales.loc[sales['Country'] == 'Australia', 'Profitability'].mean()
+ProfFrance = sales.loc[sales['Country'] == 'France', 'Profitability'].mean()
+ProfUK = sales.loc[sales['Country'] == 'United Kingdom', 'Profitability'].mean()
+ProfGerm = sales.loc[sales['Country'] == 'Germany', 'Profitability'].mean()
+ProfCan = sales.loc[sales['Country'] == 'Canada', 'Profitability'].mean()
+sales.groupby(['Age_Group','Country'])["Profitability"].mean().unstack(0).plot.barh()
+plt.plot([ProfUSA,ProfUSA], [4.6,5.4],color='black')
+plt.plot([ProfAus,ProfAus], [-0.6,0.4],color='black')
+plt.plot([ProfFrance,ProfFrance], [1.6,2.4],color='black')
+plt.plot([ProfUK,ProfUK], [3.6,4.4],color='black')
+plt.plot([ProfGerm,ProfGerm], [2.6,3.4],color='black')
+plt.plot([ProfCan,ProfCan], [0.6,1.4],color='black')
+plt.text(35,0.5,"Black bars represent overall mean")
+plt.xlabel('Profitability Ratio (%)')
+plt.ylabel('Country')
+plt.title('Bar Chart Profitability of Each Age Group In Each Country')
+plt.show() 
+
+#Graph showing mean profitability of each product category in each country
+ProfUSA = sales.loc[sales['Country'] == 'United States', 'Profitability'].mean()
+ProfAus = sales.loc[sales['Country'] == 'Australia', 'Profitability'].mean()
+ProfFrance = sales.loc[sales['Country'] == 'France', 'Profitability'].mean()
+ProfUK = sales.loc[sales['Country'] == 'United Kingdom', 'Profitability'].mean()
+ProfGerm = sales.loc[sales['Country'] == 'Germany', 'Profitability'].mean()
+ProfCan = sales.loc[sales['Country'] == 'Canada', 'Profitability'].mean()
+sales.groupby(['Product_Category','Country'])["Profitability"].mean().unstack(0).plot.barh()
+plt.plot([ProfUSA,ProfUSA], [4.6,5.4],color='black')
+plt.plot([ProfAus,ProfAus], [-0.6,0.4],color='black')
+plt.plot([ProfFrance,ProfFrance], [1.6,2.4],color='black')
+plt.plot([ProfUK,ProfUK], [3.6,4.4],color='black')
+plt.plot([ProfGerm,ProfGerm], [2.6,3.4],color='black')
+plt.plot([ProfCan,ProfCan], [0.6,1.4],color='black')
+plt.text(35,0.5,"Black bars represent overall mean")
+plt.xlabel('Profitability Ratio (%)')
+plt.ylabel('Country')
+plt.title('Bar Chart Profitability of Each Product Category In Each Country')
+plt.show()
+
