@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 sales = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/sales_data.csv')
-sales['Profitability'] = sales['Profit'] / sales['Revenue'] * 100 #profit ratio variable is used to compare profitability 
+sales['Profitability'] = sales['Profit'] / sales['Revenue'] * 100
 
 #Graph showing mean profitability of each age group in each country
 ProfUSA = sales.loc[sales['Country'] == 'United States', 'Profitability'].mean()
@@ -23,8 +23,11 @@ plt.text(35,0.5,"Black bars represent overall mean")
 plt.xlabel('Profitability Ratio (%)')
 plt.ylabel('Country')
 plt.title('Bar Chart Profitability of Each Age Group In Each Country')
-plt.show() 
+plt.show()
 
+ax = sales[['Profitability', 'Age_Group']].boxplot(by='Age_Group', figsize=(10,6))
+ax.set_ylabel('Profitability')
+plt.show()
 #Graph showing mean profitability of each product category in each country
 ProfUSA = sales.loc[sales['Country'] == 'United States', 'Profitability'].mean()
 ProfAus = sales.loc[sales['Country'] == 'Australia', 'Profitability'].mean()
@@ -45,6 +48,9 @@ plt.ylabel('Country')
 plt.title('Bar Chart Profitability of Each Product Category In Each Country')
 plt.show()
 
+ax = sales[['Profitability', 'Product_Category']].boxplot(by='Product_Category', figsize=(10,6))
+ax.set_ylabel('Profitability')
+plt.show()
 #Graph showing mean profitability of each gender in each country
 ProfUSA = sales.loc[sales['Country'] == 'United States', 'Profitability'].mean()
 ProfAus = sales.loc[sales['Country'] == 'Australia', 'Profitability'].mean()
@@ -63,4 +69,8 @@ plt.text(35,0.5,"Black bars represent overall mean")
 plt.xlabel('Profitability Ratio (%)')
 plt.ylabel('Country')
 plt.title('Bar Chart Profitability of Each Gender In Each Country')
+plt.show()
+
+ax = sales[['Profitability', 'Customer_Gender']].boxplot(by='Customer_Gender', figsize=(10,6))
+ax.set_ylabel('Profitability')
 plt.show()
