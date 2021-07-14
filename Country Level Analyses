@@ -80,24 +80,24 @@ sales2016 = sales.loc[sales['Year'] == 2016
 genders = sales2016.groupby(['Customer_Gender','Country'])["State"].count().unstack(0) #this reveals the figures for the M/F for the pie charts, then manualling inputted
 
 ax1 = plt.subplot2grid((2,3),(0,0))
-plt.pie((11506,12430),colors=("r","b"))
+plt.pie((2658,3116),colors=("r","b"))
 plt.title('Australia')
 #first row sec col
 ax1 = plt.subplot2grid((2,3), (0, 1))
-plt.pie((6496,7682),colors=("r","b"))
+plt.pie((1738,2039),colors=("r","b"))
 plt.title('Canada')
 ax1 = plt.subplot2grid((2,3), (0, 2))
-plt.pie((6712,6908),colors=("r","b"))
+plt.pie((1532,1443),colors=("r","b"))
 plt.title('United Kingdom')
 #Second row first column
 ax1 = plt.subplot2grid((2,3), (1, 0))
-plt.pie((5504,5494),colors=("r","b"))
+plt.pie((1507,1555),colors=("r","b"))
 plt.title('France')
 #second row second column
 ax1 = plt.subplot2grid((2,3), (1, 1))
-plt.pie((5572,5526),colors=("r","b"))
+plt.pie((1711,1868),colors=("r","b"))
 plt.title('Germany')
 ax1 = plt.subplot2grid((2,3), (1, 2))
-plt.pie((18934,20272),colors=("r","b"))
+plt.pie((4721,5510),colors=("r","b"))
 plt.title('United States')
-ax1.legend()
+ax1.legend(["F","M"])
