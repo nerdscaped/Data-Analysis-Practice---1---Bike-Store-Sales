@@ -76,6 +76,9 @@ ax.set_ylabel('Profitability')
 plt.show()
 
 #pie chart to genders in each country
+sales2016 = sales.loc[sales['Year'] == 2016  
+genders = sales2016.groupby(['Customer_Gender','Country'])["State"].count().unstack(0) #this reveals the figures for the M/F for the pie charts, then manualling inputted
+
 ax1 = plt.subplot2grid((2,3),(0,0))
 plt.pie((11506,12430),colors=("r","b"))
 plt.title('Australia')
