@@ -101,3 +101,10 @@ ax1 = plt.subplot2grid((2,3), (1, 2))
 plt.pie((4721,5510),colors=("r","b"))
 plt.title('United States')
 ax1.legend(["F","M"])
+
+#find out distribution of male and female profit
+salesM = sales.loc[sales['Customer_Gender'] == "M",'Profitability']
+salesF = sales.loc[sales['Customer_Gender'] == "F",'Profitability']
+
+plt.hist(salesM, 8, facecolor='blue', alpha=1)
+plt.hist(salesF, 8, facecolor='red', alpha=0.4)
