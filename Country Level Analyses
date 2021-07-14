@@ -74,3 +74,27 @@ plt.show()
 ax = sales[['Profitability', 'Customer_Gender']].boxplot(by='Customer_Gender', figsize=(10,6))
 ax.set_ylabel('Profitability')
 plt.show()
+
+#pie chart to genders in each country
+ax1 = plt.subplot2grid((2,3),(0,0))
+plt.pie((11506,12430),colors=("r","b"))
+plt.title('Australia')
+#first row sec col
+ax1 = plt.subplot2grid((2,3), (0, 1))
+plt.pie((6496,7682),colors=("r","b"))
+plt.title('Canada')
+ax1 = plt.subplot2grid((2,3), (0, 2))
+plt.pie((6712,6908),colors=("r","b"))
+plt.title('United Kingdom')
+#Second row first column
+ax1 = plt.subplot2grid((2,3), (1, 0))
+plt.pie((5504,5494),colors=("r","b"))
+plt.title('France')
+#second row second column
+ax1 = plt.subplot2grid((2,3), (1, 1))
+plt.pie((5572,5526),colors=("r","b"))
+plt.title('Germany')
+ax1 = plt.subplot2grid((2,3), (1, 2))
+plt.pie((18934,20272),colors=("r","b"))
+plt.title('United States')
+ax1.legend()
