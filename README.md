@@ -8,4 +8,4 @@ I chose this dataset as I wanted to investigate whether working with sales data 
 The objective of the project is the help the board decide where/how it will be best for the board to spend their marketing budget. This is done by identifying the customers that are currently contributing most to profits and sales, with this information presented in a report and a presentation.
 
 Report Google Docs Link: https://docs.google.com/document/d/1msztY0gT1m6U77MefFKTO3BooxpHkqo9SajYHTyZ5Yo/edit?usp=sharing
-Presentation Google Slides Link: https://docs.google.com/presentation/d/14_rb8jc6KZpn_m3ymxGqbbeBGNajMbVlN20jNr4hssg/edit?usp=sharing 
+Presentation Google Slides Link: https://docs.google.com/presentation/d/14_rb8jc6KZpn_m3ymxGqbbeBGNajMbVlN20jNr4hssg/edit?usp=sharing
