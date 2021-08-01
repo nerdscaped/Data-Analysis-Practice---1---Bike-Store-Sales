@@ -1,0 +1,146 @@
+#Import Packages
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn import linear_model
+
+#Create Key Variables
+sales = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/sales_data.csv')
+sales['Profit Ratio (%)'] = sales['Profit'] / sales['Revenue'] * 100
+sales2015 = sales.loc[sales['Year'] == 2015]
+
+#******************************Box Plot 1 - Profitability of Each Country******************************
+ax = sales2015[['Profitability', 'Country']].boxplot(by='Country', figsize=(10,6))
+ax.set_ylabel('Profit Ratio (%)')
+ax.set_xlabel('Country')
+ax.set_title('Box Plot to Show Variation in Profit Ratios between Countries in 2015')
+plt.show()
+
+#******************************Density Plot 1 - Distributions of Profit Ratio in Each Country******************************
+#Country Profit Ratio Variable Creation
+usap = pd.DataFrame(sales2015.loc[sales2015['Country'] == 'United States', 'Profit Ratio (%)'])
+ukp = pd.DataFrame(sales2015.loc[sales2015['Country'] == 'United Kingdom', 'Profit Ratio (%)'])
+cp = pd.DataFrame(sales2015.loc[sales2015['Country'] == 'Canada', 'Profit Ratio (%)'])
+fp = pd.DataFrame(sales2015.loc[sales2015['Country'] == 'France', 'Profit Ratio (%)'])
+ap = pd.DataFrame(sales2015.loc[sales2015['Country'] == 'Australia', 'Profit Ratio (%)'])
+gp = pd.DataFrame(sales2015.loc[sales2015['Country'] == 'Germany', 'Profit Ratio (%)'])
+
+#Graph Formation
+fig, axes = plt.subplots(2,3)
+sns.kdeplot(usap['Profit Ratio (%)'], ax=axes[0,0],fill=True,color='green').set_ylim(0, 0.1)
+axes[0,0].set_title('United States')
+axes[0,0].grid()
+sns.kdeplot(ukp['Profit Ratio (%)'], ax=axes[0,1],fill=True,color='red').set_ylim(0, 0.1)
+axes[0,1].set_title('United Kingdom')
+axes[0,1].grid()
+sns.kdeplot(cp['Profit Ratio (%)'], ax=axes[0,2],fill=True,color='blue').set_ylim(0, 0.1)
+axes[0,2].set_title('Canada')
+axes[0,2].grid()
+sns.kdeplot(fp['Profit Ratio (%)'], ax=axes[1,0],fill=True,color='black').set_ylim(0, 0.1)
+axes[1,0].set_title('France')
+axes[1,0].grid()
+sns.kdeplot(ap['Profit Ratio (%)'], ax=axes[1,1],fill=True,color='brown').set_ylim(0, 0.1)
+axes[1,1].set_title('Australia')
+axes[1,1].grid()
+sns.kdeplot(gp['Profit Ratio (%)'], ax=axes[1,2],fill=True,color='orange').set_ylim(0, 0.1)
+axes[1,2].set_title('Germany')
+axes[1,2].grid()
+plt.rcParams["figure.dpi"] = 100
+plt.show()
+
+#******************************Box Plot 2 - Profitability of Each Gender******************************
+ax = sales2015[['Profit Ratio (%)', 'Customer_Gender']].boxplot(by='Customer_Gender', figsize=(10,6))
+ax.set_ylabel('Profit Ratio (%)')
+ax.set_xlabel('Gender')
+ax.set_title('Box Plot to Show Variation in Profit Ratios between Genders in 2015')
+plt.show()
+
+#******************************Density Plot 2 - Distributions of Each Gender's Profit Ratio in Each Country******************************
+#Gender/Country Profit Ratio Variables Creation
+usf = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'United States') & (sales2015['Customer_Gender'] == 'F'), 'Profit Ratio (%)'])
+usm = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'United States') & (sales2015['Customer_Gender'] == 'M'), 'Profit Ratio (%)'])
+ukf = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'United Kingdom') & (sales2015['Customer_Gender'] == 'F'), 'Profit Ratio (%)'])
+ukm = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'United Kingdom') & (sales2015['Customer_Gender'] == 'M'), 'Profit Ratio (%)'])
+ff = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'France') & (sales2015['Customer_Gender'] == 'F'), 'Profit Ratio (%)'])
+fm = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'France') & (sales2015['Customer_Gender'] == 'M'), 'Profit Ratio (%)'])
+gf = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'Germany') & (sales2015['Customer_Gender'] == 'F'), 'Profit Ratio (%)'])
+gm = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'Germany') & (sales2015['Customer_Gender'] == 'M'), 'Profit Ratio (%)'])
+cf = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'Canada') & (sales2015['Customer_Gender'] == 'F'), 'Profit Ratio (%)'])
+cm = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'Canada') & (sales2015['Customer_Gender'] == 'M'), 'Profit Ratio (%)'])
+af = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'Australia') & (sales2015['Customer_Gender'] == 'F'), 'Profit Ratio (%)'])
+am = pd.DataFrame(sales2015.loc[(sales2015['Country'] == 'Australia') & (sales2015['Customer_Gender'] == 'M'), 'Profit Ratio (%)'])
+
+#Graph Creation
+fig, axes = plt.subplots(2, 3, sharex=True, figsize=(10,5))
+fig.suptitle('Distributions of Profit Ratios Between Genders in Each Country in 2015')
+axes[0,0].set_title('United States')
+sns.histplot(ax=axes[0,0],data=usf,x="Profit Ratio (%)",kde=True,color='red',stat='density',bins=20).set_ylim(0, 0.15)
+sns.histplot(ax=axes[0,0],data=usm,x="Profit Ratio (%)",kde=True,alpha=0.7,stat='density',bins=20).set_ylim(0, 0.15)
+axes[0,1].set_title('United Kingdom')
+sns.histplot(ax=axes[0,1],data=ukf,x="Profit Ratio (%)",kde=True,color='red',stat='density',bins=20).set_ylim(0, 0.15)
+sns.histplot(ax=axes[0,1],data=ukm,x="Profit Ratio (%)",kde=True,alpha=0.7,stat='density',bins=20).set_ylim(0, 0.15)
+axes[0,2].set_title('France')
+sns.histplot(ax=axes[0,2],data=ff,x="Profit Ratio (%)",kde=True,color='red',stat='density',bins=20).set_ylim(0, 0.15)
+sns.histplot(ax=axes[0,2],data=fm,x="Profit Ratio (%)",kde=True,alpha=0.7,stat='density',bins=20).set_ylim(0, 0.15)
+axes[1,0].set_title('Germany')
+sns.histplot(ax=axes[1,0],data=gf,x="Profit Ratio (%)",kde=True,color='red',stat='density',bins=20).set_ylim(0, 0.15)
+sns.histplot(ax=axes[1,0],data=gm,x="Profit Ratio (%)",kde=True,alpha=0.7,stat='density',bins=20).set_ylim(0, 0.15)
+axes[1,1].set_title('Canada')
+sns.histplot(ax=axes[1,1],data=cf,x="Profit Ratio (%)",kde=True,color='red',stat='density',bins=20).set_ylim(0, 0.15)
+sns.histplot(ax=axes[1,1],data=cm,x="Profit Ratio (%)",kde=True,alpha=0.7,stat='density',bins=20).set_ylim(0, 0.15)
+axes[1,2].set_title('Australia')
+sns.histplot(ax=axes[1,2],data=af,x="Profit Ratio (%)",kde=True,color='red',stat='density',bins=20).set_ylim(0, 0.15)
+sns.histplot(ax=axes[1,2],data=am,x="Profit Ratio (%)",kde=True,alpha=0.7,stat='density',bins=20).set_ylim(0, 0.15)
+plt.legend(labels=['Females','Males'],bbox_to_anchor=(1,1.5), loc='upper left')
+plt.show()
+
+#******************************Pie Charts 1 - gender proportions in each country in 2015******************************
+#Variable Extraction
+gender = sales2015.groupby(['Country','Customer_Gender'])["Customer_Gender"].count().unstack(0)
+gender = gender.T
+
+#Pie Chart Creation
+ax1 = plt.subplot2grid((2,3),(0,0))
+plt.pie((gender.iloc[0]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,colors=("r","b"))
+plt.title('Australia',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (0, 1))
+plt.pie((gender.iloc[1]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,colors=("r","b"))
+plt.title('Canada',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (0, 2))
+plt.pie((gender.iloc[4]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,colors=("r","b"))
+plt.title('United Kingdom',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (1, 0))
+plt.pie((gender.iloc[2]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,colors=("r","b"))
+plt.title('France',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (1, 1))
+plt.pie((gender.iloc[3]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,colors=("r","b"))
+plt.title('Germany',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (1, 2))
+plt.pie((gender.iloc[5]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,colors=("r","b"))
+plt.title('United States',fontdict={'family':'arial','weight':'bold'})
+ax1.legend((gender.columns),bbox_to_anchor=(0.7,1.35), loc='upper left',prop={'size':12,'family':'arial'})
+
+#******************************Scatter Plot 1 - Age, Profit Ratio Plot******************************
+#Initial Plot
+g = sns.lmplot('Customer_Age','Profit Ratio (%)',sales2015,fit_reg=True,aspect=1.5,ci=None,scatter_kws={"s": 100})
+#Find x and y parameters to help understand relationship
+regr = linear_model.LinearRegression()
+X = sales2015.Customer_Age.values.reshape(-1,1)
+y = sales2015.Profitability.values.reshape(-1,1)
+regr.fit(X, y)
+print("The x coefficient is " + str(regr.coef_[0]))
+print("The intercept is " + str(regr.intercept_))
+
+#Add overlay to graph to describe relationship
+props = dict(boxstyle='round', alpha=0.5,color='red')
+textstr = 'y=45.1 + 0.06x'
+g.ax.text(0.7, 0.9, textstr, transform=g.ax.transAxes, fontsize=14, bbox=props)
+#Graph Formatting
+plt.xlabel("Customer Age (Years)")
+plt.ylabel("Profit Ratio (%)")
+plt.title('Scatterplot to Show the Relationship between Customer Age and Profit Ratio in 2015')
+plt.show()
+
+
+
