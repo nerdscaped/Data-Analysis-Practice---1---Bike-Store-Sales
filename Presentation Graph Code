@@ -1,0 +1,250 @@
+#Load Packages
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.ticker import FuncFormatter
+
+#***********************************Tableau Countries Sales/Profit Ratio Analysis***********************************
+#Load Data
+sales = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/sales_data.csv')
+states = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/states.csv')
+sales2015 = sales[sales['Year'] == 2015]
+
+#Profit and Sales Region Variable Formation and Saving
+regionprofit15 = sales2015['Profit'].groupby(sales2015['State']).sum()
+regionprofit15.to_csv('regionprofit15.csv')
+regionprofitR15 = sales2015['Profit Ratio (%)'].groupby(sales2015['State']).mean()
+regionprofitR15.to_csv('regionprofitR15.csv')
+regionsales15 = sales2015['Profit Ratio (%)'].groupby(sales2015['State']).count()
+regionsales15.to_csv('regionsales15.csv')
+
+#Performance Variable Formation (see report for more information)
+states = pd.read_csv('C:/Users/Matt/Documents/Python/CSV/State_Data.csv')
+states['profit performance income']  = states['Profit 2015 YT: Average Profit 2015 YT'] / states['GRP p/c: Average GRP p/c Ratio']
+states['profit performance population']  = states['Profit 2015 YT: Average Profit 2015 YT'] / states['Population: Average Population']
+states['PR performance income']  = states['Region Mean Profit Ratio 2015: Average Region Mean Profit Ratio 2015'] / states['GRP p/c: Average GRP p/c Ratio']
+states['PR performance population']  = states['Region Mean Profit Ratio 2015: Average Region Mean Profit Ratio 2015'] / states['Population: Average Population']
+states['sales performance income']  = states['Number of Sales 2015: Average Number of Sales 2015'] / states['GRP p/c: Average GRP p/c Ratio']
+states['sales performance population']  = states['Number of Sales 2015: Average Number of Sales 2015'] / states['Population: Average Population']
+states['profit overall']  = np.log(states['profit performance population'] * states['profit performance income'])
+states['PR overall']  = np.log(states['PR performance income'] * states['PR performance population'])
+states['sales overall']  = np.log(states['sales performance income'] * states['sales performance population'])
+states.to_csv('stateperformance.csv')
+
+#France dataset saving (due to Tableau not including French Departments by default)
+statesF = states.loc[states['Country'] == 'France']
+statesF.to_csv('statesfrance.csv')
+
+***********************************Age and Profit Ratio Scatter Plot***********************************
+sns.histplot(data=sales2015,x="Customer_Age",kde=True,color='red',stat='density',bins=60)
+plt.xlabel("Customer Age (Years)")
+plt.title("Histogram to Show the Distribution of Customer's Age in 2015")
+plt.show()
+
+***********************************Month Analysis Line Plot, with sales and profits***********************************
+#Variable Formation USA
+salesUSA = sales.loc[sales['Country'] == 'United States']
+USAprofit = salesUSA.groupby(sales['Date'].dt.strftime('%B'))['Profit'].sum()
+USAprofit = [USAprofit[i] for i in order]
+USAprofit = [897161/5, 770439/5, 956999/5, 967298/5, 1264442/5, 1173770/5, 709528/5, 827139/5, 732378/4, 747679/4, 860567/4, 1166244/4]
+USAsales = salesUSA.groupby(sales['Date'].dt.strftime('%B'))['Revenue'].count()
+USAsales = [USAsale[i] for i in order]
+USAsales = [3126/5, 2996/5, 3260/5, 3424/5, 4056/5, 3802/5, 2570/5, 2934/5, 2718/4, 3104/4, 3202/4, 4014/4]
+#Variable Formation UK
+salesUK = sales.loc[sales['Country'] == 'United Kingdom']
+UKprofit = salesUK.groupby(sales['Date'].dt.strftime('%B'))['Profit'].sum()
+UKprofit = [UKprofit[i] for i in order]
+UKprofit = [392608/5, 366165/5, 407496/5, 382798/5, 404979/5, 500939/5, 266287/5, 277341/5, 286899/4, 320235/4, 319701/4, 488405/4]
+UKsales = salesUK.groupby(sales['Date'].dt.strftime('%B'))['Revenue'].count()
+UKsales = [UKsales[i] for i in order]
+UKsales = [1114/5, 1054/5, 1254/5, 1190/5, 1268/5, 1460/5, 850/5, 892/5, 978/4, 1150/4, 998/4, 1412/4]
+#Variable Formation France
+salesFRA = sales.loc[sales['Country'] == 'France']
+FRAprofit = salesFRA.groupby(sales['Date'].dt.strftime('%B'))['Profit'].sum()
+FRAprofit = [FRAprofit[i] for i in order]
+FRAprofit = [210053/5, 252085/5, 271368/5, 265665/5, 276283/5, 295900/5, 177208/5, 199623/5, 217675/4, 175376/4, 166666/4, 372380/4]
+FRAsales = salesFRA.groupby(sales['Date'].dt.strftime('%B'))['Revenue'].count()
+FRAsales = [FRAsales[i] for i in order]
+FRAsales = [840/5, 990/5, 1032/5, 1112/5, 1034/5, 1158/5, 684/5, 774/5, 808/4, 650/4, 710/4, 1206/4]
+#Variable Formation Germany
+salesGER = sales.loc[sales['Country'] == 'Germany']
+GERprofit = salesGER.groupby(sales['Date'].dt.strftime('%B'))['Profit'].sum()
+GERprofit = [GERprofit[i] for i in order]
+GERprofit = [259174/5, 274309/5, 317110/5, 350504/5, 406532/5, 395168/5, 233854/5, 180418/5, 209022/4, 194348/4, 214300/4, 325256/4]
+GERsales = salesGER.groupby(sales['Date'].dt.strftime('%B'))['Revenue'].count()
+GERsales = [GERsales[i] for i in order]
+GERsales = [942/5, 884/5, 1000/5, 1080/5, 1266/5, 1194/5, 752/5, 686/5, 706/4, 834/4, 674/4, 1080/4]
+#Variable Formation Australia
+salesAUS = sales.loc[sales['Country'] == 'Australia']
+AUSprofit = salesAUS.groupby(sales['Date'].dt.strftime('%B'))['Profit'].sum()
+AUSprofit = [AUSprofit[i] for i in order]
+AUSprofit = [558407/5, 547504/5, 558205/5, 577436/5, 639528/5, 676557/5, 481964/5, 392031/5, 524355/4, 627360/4, 526896/4, 665787/4]
+AUSsales = salesAUS.groupby(sales['Date'].dt.strftime('%B'))['Revenue'].count()
+AUSsales = [AUSsales[i] for i in order]
+AUSsales = [2002/5, 2044/5, 1998/5, 2158/5, 2266/5, 2454/5, 1568/5, 1592/5, 1832/4, 2026/4, 1872/4, 2124/4]
+#Variable Formation Canada
+salesCAN = sales.loc[sales['Country'] == 'Canada']
+CANprofit = salesCAN.groupby(sales['Date'].dt.strftime('%B'))['Profit'].sum()
+CANprofit = [CANprofit[i] for i in order]
+CANprofit = [301118/5, 351820/5, 250688/5, 321018/5, 335173/5, 341249/5, 270909/5, 337652/5, 279332/4, 236314/4, 300383/4, 391640/4]
+CANsales = salesCAN.groupby(sales['Date'].dt.strftime('%B'))['Revenue'].count()
+CANsales = [CANsales[i] for i in order]
+CANsales = [1260/5, 1054/5, 1130/5, 1218/5, 1238/5, 1166/5, 1038/5, 1322/5, 1124/4, 986/4, 1278/4, 1364/4]
+
+#Line Plot Formation
+fig, ax = plt.subplots(3,2)
+labels = ['J','F','M','A','M','J','J','A','S','O','N','D']
+#USA
+ax[0][0].set_ylabel('Profit',color='red')
+ax[0][0].set_title('United States')
+ax[0][0].plot(month_order, USAprofit,color='red')
+ax[0][0].grid()
+ax[0][0].set_ylim(0, 300000)
+ax[0][0].yaxis.set_major_formatter(FuncFormatter(lambda x, pos: '%.0f'%x))
+ax[0][0].set_xticklabels([], [])
+ax[0][0].tick_params(axis='y', labelcolor='red')
+ax2 = ax[0][0].twinx()  
+ax2.set_ylabel('Sales', color='blue')  
+ax2.set_ylim(0,1100)
+ax2.set_xticklabels([], [])
+ax2.plot(month_order, USAsales, color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+#UK
+ax[1][0].set_ylabel('Profit',color='red')
+ax[1][0].set_title('United Kingdom')
+ax[1][0].plot(month_order, UKprofit,color='red')
+ax[1][0].grid()
+ax[1][0].set_ylim(0, 300000)
+ax[1][0].yaxis.set_major_formatter(FuncFormatter(lambda x, pos: '%.0f'%x))
+ax[1][0].set_xticklabels([], [])
+ax[1][0].tick_params(axis='y', labelcolor='red')
+ax2 = ax[1][0].twinx()  
+ax2.set_ylim(0,1100)
+ax2.set_xticklabels([], [])
+ax2.set_ylabel('Sales', color='blue')  
+ax2.plot(month_order, UKsales, color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+#Germany
+ax[2][0].set_ylabel('Profit',color='red')
+ax[2][0].set_title('Germany')
+ax[2][0].plot(month_order, GERprofit,color='red')
+ax[2][0].grid()
+ax[2][0].set_ylim(0, 300000)
+ax[2][0].yaxis.set_major_formatter(FuncFormatter(lambda x, pos: '%.0f'%x))
+ax[2][0].set_xticklabels(labels=labels)
+ax[2][0].set(xlabel='Month')
+ax[2][0].tick_params(axis='y', labelcolor='red')
+ax2 = ax[2][0].twinx()  
+ax2.set_ylim(0,1100)
+ax2.set_xticklabels(labels=labels)
+ax2.set_ylabel('Sales', color='blue')  
+ax2.plot(month_order, GERsales, color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+#France
+ax[0][1].set_ylabel('Profit',color='red')
+ax[0][1].set_title('France')
+ax[0][1].plot(month_order, FRAprofit,color='red')
+ax[0][1].grid()
+ax[0][1].set_ylim(0, 300000)
+ax[0][1].yaxis.set_major_formatter(FuncFormatter(lambda x, pos: '%.0f'%x))
+ax[0][1].set_xticklabels([], [])
+ax[0][1].tick_params(axis='y', labelcolor='red')
+ax2 = ax[0][1].twinx()  
+ax2.set_ylim(0,1100)
+ax2.set_xticklabels([], [])
+ax2.set_ylabel('Sales', color='blue')  
+ax2.plot(month_order, FRAsales, color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+#Canada
+ax[1][1].set_ylabel('Profit',color='red')
+ax[1][1].set_title('Canada')
+ax[1][1].plot(month_order, CANprofit,color='red')
+ax[1][1].grid()
+ax[1][1].set_ylim(0, 300000)
+ax[1][1].yaxis.set_major_formatter(FuncFormatter(lambda x, pos: '%.0f'%x))
+ax[1][1].set_xticklabels([], [])
+ax[1][1].tick_params(axis='y', labelcolor='red')
+ax2 = ax[1][1].twinx()  
+ax2.set_xticklabels([], [])
+ax2.set_ylabel('Sales', color='blue')  
+ax2.set_ylim(0,1100)
+ax2.plot(month_order, CANsales, color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+#Australia
+ax[2][1].set_ylabel('Profit',color='red')
+ax[2][1].set_title('Australia')
+ax[2][1].plot(month_order, AUSprofit,color='red')
+ax[2][1].grid()
+ax[2][1].set_ylim(0, 300000)
+ax[2][1].yaxis.set_major_formatter(FuncFormatter(lambda x, pos: '%.0f'%x))
+ax[2][1].set_xticklabels(labels=labels)
+ax[2][1].set(xlabel='Month')
+ax[2][1].tick_params(axis='y', labelcolor='red')
+ax2 = ax[2][1].twinx()  
+ax2.set_ylim(0,1100)
+ax2.set_xticklabels(labels=labels)
+ax2.set_ylabel('Sales', color='blue')  
+ax2.plot(month_order, AUSsales, color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+plt.show()
+
+#***********************************Bar Chart showing median profit ratios in each nation in 2015***********************************
+sales2015 = sales.loc[sales['Year'] == 2015]
+#These profit variables are created so that the graph displays the median profit rations in each country
+ProfUSA = sales2015.loc[sales['Country'] == 'United States', 'Profit Ratio (%)'].median()
+ProfAus = sales2015.loc[sales['Country'] == 'Australia', 'Profit Ratio (%)'].median()
+ProfFrance = sales2015.loc[sales['Country'] == 'France', 'Profit Ratio (%)'].median()
+ProfUK = sales2015.loc[sales['Country'] == 'United Kingdom', 'Profit Ratio (%)'].median()
+ProfGerm = sales2015.loc[sales['Country'] == 'Germany', 'Profit Ratio (%)'].median()
+ProfCan = sales2015.loc[sales['Country'] == 'Canada', 'Profit Ratio (%)'].median()
+
+#Graph Formation
+sales2015.groupby(['Product_Category','Country'])["Profit Ratio (%)"].median().unstack(0).plot.barh().grid(zorder=0)
+plt.legend(loc=3)
+plt.plot([ProfUSA,ProfUSA], [4.6,5.4],color='black')
+plt.plot([ProfAus,ProfAus], [-0.6,0.4],color='black')
+plt.plot([ProfFrance,ProfFrance], [1.6,2.4],color='black')
+plt.plot([ProfUK,ProfUK], [3.6,4.4],color='black')
+plt.plot([ProfGerm,ProfGerm], [2.6,3.4],color='black')
+plt.plot([ProfCan,ProfCan], [0.6,1.4],color='black')
+plt.xlabel('Profit Ratio (%)',fontdict={'family':'arial','weight':'bold','size':11})
+plt.ylabel('Country',fontdict={'family':'arial','weight':'bold','size':11})
+plt.title('Bar Chart Showing Profitability of Each Product Category In Each Country in 2015',fontdict={'family':'arial','weight':'bold','size':14})
+plt.show()
+
+#***********************************Product Category Sales Pie Charts***********************************
+#This table extracts the sales information of each product category in 2015
+cat = sales2015.groupby(['Product_Category','Country'])["State"].count().unstack(0)
+
+#Grapg Formation
+ax1 = plt.subplot2grid((2,3),(0,0))
+plt.pie((cat.iloc[0]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2)
+plt.title('Australia',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (0, 1))
+plt.pie((cat.iloc[1]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2)
+plt.title('Canada',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (0, 2))
+plt.pie((cat.iloc[4]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2)
+plt.title('United Kingdom',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (1, 0))
+plt.pie((cat.iloc[2]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2)
+plt.title('France',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (1, 1))
+plt.pie((cat.iloc[3]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2)
+plt.title('Germany',fontdict={'family':'arial','weight':'bold'})
+ax1 = plt.subplot2grid((2,3), (1, 2))
+plt.pie((cat.iloc[5]),autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2)
+plt.title('United States',fontdict={'family':'arial','weight':'bold'})
+ax1.legend((cat.columns),bbox_to_anchor=(0.7,1.35), loc='upper left',prop={'size':12,'family':'arial'})
+
+#***********************************Heat Map showing the distribution of profit ratios/unit prices for accessories***********************************
+#Variable Formation
+salesacc = sales2015.loc[sales['Product_Category'] == 'Accessories']
+
+#Heatmap Formation
+sns.kdeplot(salesacc['Unit_Price'],salesacc['Profit Ratio (%)'],color='red',shade=True,cbar=True).set_ylim(0, 100)
+plt.xlabel('Price of Item ($)',fontdict={'family':'arial','weight':'bold','size':11})
+plt.ylabel('Profit Ratio (%)',fontdict={'family':'arial','weight':'bold','size':11})
+plt.title('Heat Map Showing Accessories Item Prices and their respective Profit Ratios in 2015',fontdict={'family':'arial','weight':'bold','size':14})
+plt.show()
